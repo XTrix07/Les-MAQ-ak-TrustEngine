@@ -31,7 +31,7 @@ if bouton_recherche:
         elif resultat["statut_couleur"] == "warning":
             st.progress(resultat["score"] / 100, text=f"Global Trust Score: {resultat['score']}%")
             st.warning(resultat["reponse"])
-            st.audio("alerte.mp3", format="audio/mp3")
+            st.audio("Alert.mp3", format="audio/mp3")
         else:
             st.progress(resultat["score"] / 100, text=f"Global Trust Score: {resultat['score']}%")
             st.error(resultat["reponse"])
