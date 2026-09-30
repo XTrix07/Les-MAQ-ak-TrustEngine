@@ -1,80 +1,68 @@
 import streamlit as st
 import time
-
-# 1. On importe TON IA depuis le fichier backend.py
 from backend import analyser_question
 
-# Configuration de la page
 st.set_page_config(page_title="SD Worx - Trust Engine", layout="wide")
 
 st.title("🛡️ SD Worx — TrustEngine")
-st.caption("Assistant de recherche interne : trouver, comprendre et faire confiance aux connaissances.")
+st.caption("Internal Knowledge Assistant: Find it. Understand it. Trust it.")
 st.divider()
 
-# 2. La barre de recherche
-st.write("Posez une question à l'IA. Essayez par exemple d'inclure les mots 'Teams' ou 'France' pour voir l'IA réagir.")
-query = st.text_input("Votre recherche :", value="Quel est le montant du télétravail en Belgique ?")
-bouton_recherche = st.button("Lancer l'analyse TrustEngine")
+st.write("Ask the AI a question. Try including words like 'Teams' or 'France' to see how the AI reacts.")
+query = st.text_input("Your search query:", value="What is the teleworking allowance amount in Belgium?")
+bouton_recherche = st.button("Run TrustEngine Analysis")
 
 st.divider()
 
-# 3. Que se passe-t-il quand on clique sur le bouton ?
 if bouton_recherche:
-    # Effet de chargement stylé
-    with st.spinner("🔍 L'IA croise les documents et calcule le score de confiance..."):
-        time.sleep(1.5)  # Simule le temps de calcul
+    with st.spinner("🔍 AI is cross-referencing documents and calculating the trust score..."):
+        time.sleep(1.5)
         
-        # ON APPELLE TON IA ICI !
         resultat = analyser_question(query)
 
-    # 4. Affichage dynamique selon le résultat renvoyé par le JSON
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        st.subheader("Réponse synthétisée")
+        st.subheader("Synthesized Answer")
         
-        # Affichage de la barre de confiance avec la bonne couleur
         if resultat["statut_couleur"] == "success":
-            st.progress(resultat["score"] / 100, text=f"Indice de confiance global : {resultat['score']}%")
+            st.progress(resultat["score"] / 100, text=f"Global Trust Score: {resultat['score']}%")
             st.success(resultat["reponse"])
         elif resultat["statut_couleur"] == "warning":
-            st.progress(resultat["score"] / 100, text=f"Indice de confiance global : {resultat['score']}%")
+            st.progress(resultat["score"] / 100, text=f"Global Trust Score: {resultat['score']}%")
             st.warning(resultat["reponse"])
+            st.audio("alerte.mp3", format="audio/mp3")
         else:
-            st.progress(resultat["score"] / 100, text=f"Indice de confiance global : {resultat['score']}%")
+            st.progress(resultat["score"] / 100, text=f"Global Trust Score: {resultat['score']}%")
             st.error(resultat["reponse"])
 
-        # Affichage des signaux d'explicabilité
-        st.markdown("#### 🔍 Signaux de confiance")
+        st.markdown("#### 🔍 Trust Signals")
         for signal in resultat["signaux"]:
             st.write(signal)
 
     with col2:
-        # Affichage des sources documentaires
-        st.subheader("📚 Sources analysées")
+        st.subheader("📚 Analyzed Sources")
         for source in resultat["sources"]:
             st.write(source)
             
         st.divider()
         
-        # Affichage du contact humain
-        st.subheader("👤 Expert Référent")
+        st.subheader("👤 Lead Expert")
         st.write(f"**{resultat['expert']}**")
-        st.button("Envoyer un message Teams à l'expert")
+        st.button("Send Teams message to expert")
         
-# --- PREUVES DOCUMENTAIRES (Dossier data) ---
 st.divider()
-with st.expander("👁 Consulter les documents bruts extraits de la base SD Worx (Dossier 'data')"):
+with st.expander("👁 View raw documents extracted from SD Worx database ('data' folder)"):
     st.markdown("""
-    **📄 data/teletravail_2026.md (Circulaire officielle - Validée)**
-    > *Extrait :* "À partir de janvier 2026, l'indemnité forfaitaire nette pour frais de télétravail en Belgique est revalorisée à 154,74 € par mois pour un temps plein. Condition obligatoire : Le télétravail doit être encadré par un avenant..."
+    **📄 data/teletravail_2026.md (Official updated rule)**
+    > *Excerpt:* "Starting January 2026, the net flat-rate teleworking allowance in Belgium is increased to €154.74 per month for a full-time employee. Mandatory condition: Teleworking must be framed by an addendum..."
     
-    **💬 data/teams_chat_informel.md (Discussion non validée)**
-    > *Thomas :* "Moi j'ai appliqué 154,74 € comme le dit la circulaire de Sarah, mais bon, entre nous, si le client insiste un peu on peut arrondir à 160 € sans que ça bloque."
+    **💬 data/teams_chat_informel.md (Unverified discussion)**
+    > *Thomas:* "I applied €154.74 as Sarah's circular says, but honestly, if the client insists a bit, we can round it up to €160 without any issues."
     
-    **📄 data/teletravail_2022.md (Archive obsolète)**
-    > *Extrait :* "L'indemnité forfaitaire nette pour les employés en télétravail est fixée à 129,48 € par mois maximum. Elle couvre les frais de bureau, d'électricité et de connexion internet."
+    **📄 data/teletravail_2022.md (Obsolete archive)**
+    > *Excerpt:* "The net flat-rate allowance for teleworking employees is set at a maximum of €129.48 per month. It covers office expenses, electricity, and internet."
     
-    **📄 data/teletravail_france.md (Hors juridiction)**
-    > *Extrait :* "En France, le remboursement des frais de télétravail s'effectue sous forme d'allocation forfaitaire [...] plafonnée à 58,05 € par mois."
+    **📄 data/teletravail_france.md (Out of jurisdiction)**
+    > *Excerpt:* "In France, the reimbursement of teleworking expenses is made in the form of a flat-rate allowance [...] capped at €58.05 per month."
     """)
