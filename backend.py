@@ -5,42 +5,43 @@ def analyser_question(question):
     Simule une IA qui analyse la question, fouille dans les documents SD Worx
     et renvoie une réponse avec un indice de confiance (format JSON/Dictionnaire).
     """
-    # On met la question en minuscules pour faciliter l'analyse des mots
     q = question.lower()
 
-    # SCÉNARIO 1 : Conflit détecté (Mots-clés : télétravail + conflit / 134 / Teams)
-    if "télétravail" in q and ("conflit" in q or "teams" in q or "134" in q):
+    # SCÉNARIO 1 : Conflit détecté (Teams ou rumeurs)
+    if "télétravail" in q and ("conflit" in q or "teams" in q or "160" in q or "180" in q):
         return {
             "scenario_nom": "litigieux",
             "score": 64,
-            "reponse": "Le montant officiel est fixé à 150,50 €, mais une divergence a été trouvée dans les communications internes (Teams). Ne pas transmettre l'ancien montant au client.",
+            "reponse": "Le montant officiel 2026 est fixé à 154,74 €/mois. Attention, une discussion Teams informelle suggère d'arrondir à 160 € ou 180 €. N'appliquez aucun arrondi non légal auprès du client.",
             "statut_couleur": "warning",  # orange
             "sources": [
-                "✅ Circulaire ONSS 2026 (150,50 €)",
-                "❌ Discussion Teams Support PME (134,10 € - Obsolète)"
+                "✅ data/teletravail_2026.md (154,74 € - Officiel)",
+                "❌ data/teams_chat_informel.md (160 € / 180 € - Non validé)",
+                "❌ data/teletravail_2022.md (129,48 € - Obsolète)"
             ],
             "signaux": [
                 "🟢 Juridiction : Droit social belge.",
-                "🟠 Alerte Conflit : Contradiction avec un message Teams non validé."
+                "🟠 Alerte Conflit : Contradiction avec un message Teams non validé.",
+                "🟠 Obsolescence : L'IA a ignoré l'ancienne grille de 2022."
             ],
-            "expert": "Marc Dupont (Expert Fiscalité)"
+            "expert": "Sarah Martin (Lead Payroll Specialist)"
         }
 
-    # SCÉNARIO 2 : Confiance Faible / Hors scope (Mots-clés : france / urssaf / paris)
+    # SCÉNARIO 2 : Confiance Faible / Hors scope (France)
     elif "france" in q or "urssaf" in q:
         return {
             "scenario_nom": "incertain",
             "score": 25,
-            "reponse": "Les éléments trouvés concernent la réglementation française et ne s'appliquent pas avec certitude au contrat belge de votre client.",
+            "reponse": "Les éléments trouvés (plafond à 58,05 €/mois) concernent exclusivement la filiale française. Ils ne s'appliquent pas au contrat belge de votre client.",
             "statut_couleur": "error",  # rouge
             "sources": [
-                "❓ Base de connaissances France (URSSAF)"
+                "❓ data/teletravail_france.md (Actif uniquement France)"
             ],
             "signaux": [
-                "🔴 Juridiction inadéquate : Document source étranger.",
-                "🔴 Donnée manquante : Aucune procédure belge indexée pour ce cas."
+                "🔴 Juridiction inadéquate : Document source français.",
+                "🔴 Donnée manquante : Précisez 'Belgique' pour obtenir le plafond ONSS."
             ],
-            "expert": "Sarah Martin (Lead Consultant Belgique)"
+            "expert": "Équipe RH France"
         }
 
     # SCÉNARIO 3 : Cas Nominal par défaut (Confiance Élevée)
@@ -48,14 +49,14 @@ def analyser_question(question):
         return {
             "scenario_nom": "nominal",
             "score": 92,
-            "reponse": "Pour les employés effectuant du télétravail structurel, l'employeur peut accorder une indemnité forfaitaire de bureau exonérée d'ONSS s'élevant à 150,50 € par mois.",
+            "reponse": "L'indemnité forfaitaire nette pour frais de télétravail en Belgique est fixée à 154,74 € par mois pour un temps plein. Condition obligatoire : le télétravail doit être encadré par un avenant au contrat.",
             "statut_couleur": "success",  # vert
             "sources": [
-                "✅ Circulaire_ONSS_FraisBureau_2026.pdf (Validé)"
+                "✅ data/teletravail_2026.md (Validé et Actif)"
             ],
             "signaux": [
-                "🟢 Fraîcheur : Circulaire mise à jour pour 2026.",
-                "🟢 Validation : Relu et approuvé par le pôle Legal SD Worx."
+                "🟢 Fraîcheur : Règle mise à jour pour 2026.",
+                "🟢 Validation : Approuvé par Sarah Martin (Legal Expert)."
             ],
-            "expert": "Sarah Martin (Lead Payroll Consultant)"
+            "expert": "Sarah Martin (Lead Payroll Specialist)"
         }

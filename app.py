@@ -18,10 +18,6 @@ bouton_recherche = st.button("Lancer l'analyse TrustEngine")
 
 st.divider()
 
-if bouton_recherche:
-    with st.spinner("🔍 Analyse des bases documentaires et vérification de la fiabilité..."):
-        time.sleep(2) # Simule un temps de chargement de 2 secondes
-
 # 3. Que se passe-t-il quand on clique sur le bouton ?
 if bouton_recherche:
     # Effet de chargement stylé
@@ -65,4 +61,20 @@ if bouton_recherche:
         st.subheader("👤 Expert Référent")
         st.write(f"**{resultat['expert']}**")
         st.button("Envoyer un message Teams à l'expert")
-
+        
+# --- PREUVES DOCUMENTAIRES (Dossier data) ---
+st.divider()
+with st.expander("👁 Consulter les documents bruts extraits de la base SD Worx (Dossier 'data')"):
+    st.markdown("""
+    **📄 data/teletravail_2026.md (Circulaire officielle - Validée)**
+    > *Extrait :* "À partir de janvier 2026, l'indemnité forfaitaire nette pour frais de télétravail en Belgique est revalorisée à 154,74 € par mois pour un temps plein. Condition obligatoire : Le télétravail doit être encadré par un avenant..."
+    
+    **💬 data/teams_chat_informel.md (Discussion non validée)**
+    > *Thomas :* "Moi j'ai appliqué 154,74 € comme le dit la circulaire de Sarah, mais bon, entre nous, si le client insiste un peu on peut arrondir à 160 € sans que ça bloque."
+    
+    **📄 data/teletravail_2022.md (Archive obsolète)**
+    > *Extrait :* "L'indemnité forfaitaire nette pour les employés en télétravail est fixée à 129,48 € par mois maximum. Elle couvre les frais de bureau, d'électricité et de connexion internet."
+    
+    **📄 data/teletravail_france.md (Hors juridiction)**
+    > *Extrait :* "En France, le remboursement des frais de télétravail s'effectue sous forme d'allocation forfaitaire [...] plafonnée à 58,05 € par mois."
+    """)
