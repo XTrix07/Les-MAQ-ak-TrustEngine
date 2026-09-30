@@ -1,7 +1,7 @@
-# Politique de remboursement des frais de télétravail - France
-- Date : 01/06/2025
-- Auteur : Équipe RH France
-- Pays : France
-- Statut : Actif (Uniquement pour la filiale française)
+# Remote Work Expense Reimbursement Policy - France
+- Date: 06/01/2025
+- Author: HR Team France
+- Country: France
+- Status: Active (French subsidiary only)
 
-En France, le remboursement des frais de télétravail s'effectue sous forme d'allocation forfaitaire exonérée de cotisations sociales dans la limite de 13,20 € par jour de télétravail, plafonnée à 58,05 € par mois.
+In France, remote work expenses are reimbursed in the form of a flat-rate allowance exempt from social security contributions up to a limit of €13.20 per day of remote work, capped at €58.05 per month.
